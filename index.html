@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwipeRightScout</title>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; text-align: center; padding: 50px; }
+        .card { background: #1e1e1e; padding: 30px; border-radius: 10px; display: inline-block; }
+        .pay-btn { background: #ffc439; color: #111; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 20px;}
+        button { background: #03dac6; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px;}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>SwipeRightScout</h1>
+        <p>Your one-time PayPal utility is ready.</p>
+        
+        <button class="pay-btn">Pay with PayPal ($1.99)</button><br>
+        
+        <button id="runBtn">Run AI Task</button>
+        <p id="output"></p>
+    </div>
+
+    <script>
+        document.getElementById('runBtn').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.innerText = "Processing...";
+            try {
+                const res = await fetch('http://localhost:8080/api/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: "start" })
+                });
+                const data = await res.json();
+                output.innerText = "Backend says: " + data.message;
+            } catch (e) {
+                output.innerText = "Error connecting to backend.";
+            }
+        });
+    </script>
+</body>
+</html>
